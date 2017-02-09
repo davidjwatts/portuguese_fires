@@ -11,9 +11,11 @@ The data to be used is available at http://archive.ics.uci.edu/ml/datasets/Fores
 
 There are 12 attributes included in the data, and 1 output variable. 4 of these variables refer to date and location, and are not currently central to the investigation. 4 variables are measurements taken when the fire was first reported and include temperature, relative humidity, wind speed, and rain over the last 30 minutes. The remaining 4 variables are various index metrics which take those four basic meteorologic measurements into account over longer periods of time and in different proportions to determine factors such as how quickly fire might be likely to spread or how hot it might be.
 
-###Approach and Questions to Investigate
+###Questions to Investigate
 
 While the paper mentioned above did examine the correlation between the 4 meteorological measurements and fire damage area, it did not investigate the relationship between the 4 index metrics and fire damage area. Perhaps this is because the index metrics were not strongly correlated. I would like to compare the correlation between the immediate meteorological data and acreage burned and the correlation between the index metrics and acreage burned to see which is stronger. Ultimately, I will try to find the combination of attributes of both types that leads to the strongest correlation.
+
+###Approach
 
 Since the output variable is a real number, I will be performing a regression analysis on the data using the contemporary best practices in machine learning.
 
