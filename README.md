@@ -1,6 +1,5 @@
-# Portuguese Fires
-##Springboard Capstone Project #1
-
+# Portuguese Fires - Springboard Capstone Project #1
+##Proposal
 ###Introduction
 Forest fires are a serious issue globally, responsible for considerable environmental and monetary damage. Early detection can provide substantial relief, but what factors and data can be used for such a complex phenomenon? While a handful of different metrics and sources of data have been used in the past to attempt prediction of fire, it is clear that simple meteorological data is the easiest to access, most abundant, and least expensive to gather. The attempt of this study is to investigate the relationship between meteorological data and the area of fire damage.
 
