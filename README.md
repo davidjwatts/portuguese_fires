@@ -24,11 +24,11 @@ I imported the data as a CSV, which was provided with column names. The 'month' 
 
 There were no null values present in the data frame. I briefly analyzed the data for problematic outliers. It appears that the output variable is strongly skewed to the right. I think this might be helped by applying a log function to the column, so I have added the column 'log' which is equal to the natural log of (area+1). This column is skewed less to the right. It looks like some of the index metrics have some outliers. I don't think I should scrutinize these for accuracy, since the data has already been careful chosen, but I will be sure to consider their role in model fitting.
 
-###Data Story
+##Data Story
 
 FMC, DMC, and DC all take longer term rainfall and temperature averages into account to measure how dry the land is. They consider the past 16 hours, 12 days, and 52 days respectively. FMC and DMC also consider relative humidity. ISI takes FMC and factors in wind speed to determine how easily surface level fuel will catch fire and begin to spread.
 
-##Correlations between Predictors
+###Correlations between Predictors
 
 It seems quite clear that FFMC and ISI have some sort of hyperbolic relationship. This makes sense since FFMC is considered along with wind to calculate ISI.
 
@@ -40,7 +40,7 @@ DMC and DC are obviously calculated in a very similar way, and the difference is
 
 There are many more fires in the Summer, but there are also a decent number in the late Winter/early Spring. While there are more larger fires in the Summer, December seems to have the highest average fire size.
 
-##Connections to Month
+###Connections to Month
 
 ![Fire Damage by Month](https://github.com/davidjwatts/portuguese_fires/blob/master/images/firesbymonth.png "Fire Damage by Month"))
 
@@ -48,7 +48,7 @@ This leads me to wonder if the dryness is distributed in a similar way.
 
 <INSERT CHART OF DMC by month>
 
-##Outliers
+###Outliers
 
 Rain and ISI both seem to have some extreme outliers. However, I have no reason to think these data points are unreliable. I will experiment with removing this when fitting the models.
 
@@ -56,16 +56,16 @@ Rain and ISI both seem to have some extreme outliers. However, I have no reason 
 
 ![Rain dist](https://github.com/davidjwatts/portuguese_fires/blob/master/images/raindist.png "Rain Distribution"))
 
-###Preliminary Statistical Analysis
+##Preliminary Statistical Analysis
 
 Using Pearson correlation coefficient matrix, it is clear that none of the predictor variables have an overly strong co-linear relationship. It is also apparent that none of the predictors have a strong linear correlation with the target variable.
 
 Ordinary least squares regression fails miserably with this data. The R^2 is less than 3%.  
 
-###Approach
+##Approach
 
 Since the output variable is a real number, I will attempt a regression analysis on the data using the contemporary best practices in machine learning. This will include various type of regression, including ridge regression, polynomial regression, regression trees, and regression SVM. It makes sense to me to also qualify the fire size as being either small or large (area equal to zero or greater than zero), and then run classification models as well.
 
-###Deliverables
+##Deliverables
 
 The final deliverables will consist of a slide deck, iPython notebook, and final paper writing up the details of the investigation and its conclusions.
