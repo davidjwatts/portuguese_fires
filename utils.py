@@ -25,6 +25,6 @@ def wrangle():
 	df = pd.read_csv(PATH, sep=',', header=0)
 	df['month'] = short_lcase_month_to_int(df['month'])
 	df['day'] = df['day'].map(lambda x:LCASE_DAY_ABRV_DICT[x])
-	df['log(area)'] = np.log(df['area']+1)
-	df['area=0'] = df['area']==0
+	df['log'] = np.log(df['area']+1)
+	df['small'] = df['area']==0
 	return df
