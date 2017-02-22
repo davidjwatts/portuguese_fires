@@ -46,7 +46,9 @@ There are many more fires in the Summer, but there are also a decent number in t
 
 This leads me to wonder if the dryness is distributed in a similar way.
 
-<INSERT CHART OF DMC by month>
+![DMC by Month](https://github.com/davidjwatts/portuguese_fires/blob/master/images/DMCbymonth.png "DMC by Month")
+
+It appears so. It may behoove me to include month as a model predictor. 
 
 ###Outliers
 
