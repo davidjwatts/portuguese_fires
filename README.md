@@ -28,6 +28,9 @@ There were no null values present in the data frame. I briefly analyzed the data
 
 FMC, DMC, and DC all take longer term rainfall and temperature averages into account to measure how dry the land is. They consider the past 16 hours, 12 days, and 52 days respectively. FMC and DMC also consider relative humidity. ISI takes FMC and factors in wind speed to determine how easily surface level fuel will catch fire and begin to spread.
 
+
+![FFMC vs ISI](https://github.com/davidjwatts/portuguese_fires/blob/master/images/FFMCvsISI.png "Logo Title Text 1")
+
 ###Approach
 
 Since the output variable is a real number, I will attempt a regression analysis on the data using the contemporary best practices in machine learning. This will include various type of regression, including ridge regression, polynomial regression, regression trees, and regression SVM. It makes sense to me to also qualify the fire size as being either small or large (area equal to zero or greater than zero), and then run classification models as well.
