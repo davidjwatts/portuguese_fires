@@ -40,7 +40,7 @@ Many (almost half) of the fires have been rounded to size 0, and this prevents t
 
 The several variables have a lot of skew, so several transformations may be useful when performing the machine learning phase. A logarithmic transformation help reduce skew considerably for FFMC and area, while the square root brings ISI and considerably closer to normal.
 
-If we perform a logistic regression and random forest analysis to test whether the data with area 0 is distinguishable from the rest, we get poor ares under the ROC curves, only slightly above 50% on average.
+If we perform a logistic regression and random forest analysis to test whether the data with area=0 is distinguishable from the rest, we get poor areas under the ROC curves, only slightly above 50% on average.
 
 ##Machine Learning
 
