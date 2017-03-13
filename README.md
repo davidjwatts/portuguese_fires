@@ -45,3 +45,9 @@ If we perform a logistic regression and random forest analysis to test whether t
 ##Machine Learning
 
 [Machine_Learning.ipynb](https://github.com/davidjwatts/portuguese_fires/blob/master/Machine_Mearning.ipynb)
+
+Off the bat, it is clear that this will be a difficult regression task. Least squares regression analysis and principle components analysis suggests that the input variables are not highly correlated with the target variable.
+
+I bring many different regression algorithms, including: ridge regression, elastic net, lasso lars, support vector regression, and gradient boosting regression. The clear leaders are gradient boosting regression and support vector regression with radial basis kernel. The ensemble method consisting of averaging the predictions from those two models yields the best average MAE scores over repeated tests.
+
+Hyper-parameters for the SVR model were fitted using 30 iterations of 10-fold cross-validation using a set of parameters surrounding base-line settings presented in the article. SVR parameters superior to those used in the article were achieved, but only reducing average MAE from 12.71 to 12.69. The ensemble method to shave another hundredth off average MAE.
