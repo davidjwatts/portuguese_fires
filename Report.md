@@ -34,11 +34,11 @@ You can find the full data story in [Data_Story.ipynb](https://github.com/davidj
 
 There are 12 attributes included in the data, and 1 output variable.
 
-Two of these variables refer to the x and y coordinates of a map specific to Montesinho natural park, the location of the fires. Two variables refer to the time of the fire, one being the day of the week the fire was reported and another is the month of the year.
+Two of these variables refer to the x and y coordinates of a map specific to Montesinho natural park, the location of the fires. Two variables refer to the time of the fire, one being the day of the week and the other being the month of the year the fire was reported.
 
-Four variables are measurements taken when the fire was first reported and include temperature, relative humidity, rain over the last 30 minutes, and wind speed.
+Four variables are meteorological measurements taken when the fire was first reported and include temperature, relative humidity, rain over the last 30 minutes, and wind speed.
 
-The remaining four variables, FMC, DMC, DC, and ISI, are various index metrics which take those four basic meteorologic measurements into account over longer periods of time and in different proportions to determine factors such as moisture levels at different depths of the soil, which suggest how quickly a fire might be likely to spread or the temperatures it might reach.
+The remaining four variables, FMC, DMC, DC, and ISI, are FWIC index metrics which take those four basic meteorologic measurements into account over longer periods of time and in different proportions to determine factors such as moisture levels at different depths of the soil, which suggest how quickly a fire might be likely to spread or the temperature it might reach.
 
 FMC, DMC, and DC all take longer term rainfall and temperature averages into account to measure how dry the land is. They consider the past 16 hours, 12 days, and 52 days respectively. FMC and DMC also consider relative humidity. ISI takes FMC and factors in wind speed to determine how easily surface level fire will spread.
 
@@ -48,17 +48,20 @@ The target variable is the area of fire damage, measured in hectares. While each
 
 ~48% of the fires have been rounded to size 0, and this prevents transformation to a Gaussian distribution. However, this does provide a binary classification of the fires.
 
-Several variables have a lot of skew, so several transformations may be useful when performing the machine learning phase. A logarithmic transformation help reduce skew considerably for FFMC and area, while the square root brings ISI and rain considerably closer to normal.
+Several variables have a lot of skew, so several transformations may be useful when performing the machine learning phase. A logarithmic transformation helps reduce skew considerably for FFMC and area, while the square root brings ISI and rain considerably closer to normal.
 
 The Pearson correlation coefficients between input variables suggest we don't have to worry about co-linearity:
+
 ![alt text](https://github.com/davidjwatts/portuguese_fires/blob/master/images/coefmat.png "Pearson coefficient matrix")
 
 Plotting each variable against the other gives more insight into the relationships:
+
 ![alt text](https://github.com/davidjwatts/portuguese_fires/blob/master/images/pairplot.png "Pair plots")
 
 It is apparent that the FWIC metrics are manufactured from each other since their pair plots have so much structure. For instance, ISI and FFMC have some sort of hyperbolic relationship, and DMC and DC have a very linear relationship with an additional parameter separating the data into distinct parallel lines.
 
 Looking at the individual relationships between input variables and the target is informative as well:
+
 ![alt text](https://github.com/davidjwatts/portuguese_fires/blob/master/images/targetplot1.png "Target plot 1")
 ![alt text](https://github.com/davidjwatts/portuguese_fires/blob/master/images/targetplot2.png "Target plot 2")
 
@@ -67,14 +70,18 @@ You can see vague trends but all of the data points with area=0 seem to drown th
 Another thing to notice from both sets of pair plots is that they have been color coded to distinguish fires of size zero. Unfortunately, we do not see any separation of the colors when one of the axes is not area.
 
 Looking at the breakdown of fire size by month provides relief by granting our intuition:
+
 ![alt text](https://github.com/davidjwatts/portuguese_fires/blob/master/images/areabymonth.png "Area broken down by month")
 
 And this graph resembles the break down of temperature:
+
 ![alt text](https://github.com/davidjwatts/portuguese_fires/blob/master/images/tempbymonth.png "Temperature broken down by month")
 
-But the problem remains that many size zero fires occur in all circumstances. Indeed, simply distinguishing fires of size zero and those larger from the input variables is no easy feat. Running multiple iterations of logistic regression and random forests results in ~53% success prediction rate, with ROC curves that resemble guessing.
+But the problem remains that many size zero fires occur in all circumstances. Indeed, simply distinguishing fires of size zero and those larger using the input variables is no easy feat. Running multiple iterations of logistic regression and random forests results in ~53% success prediction rate, with receiver operating characteristic (ROC) curves that resemble guessing.
 
-This suggest the input variables are really very close to noise relative to the size of the fire.
+![alt text](https://github.com/davidjwatts/portuguese_fires/blob/master/images/rocs.png "ROC Curves")
+
+This suggests the input variables are really very close to noise relative to the size of the fire.
 
 ## Machine Learning
 
