@@ -1,24 +1,24 @@
 # Portuguese Forest Fires - Springboard Capstone Project
 
-##Overview
+## Overview
 
-###Introduction
+### Introduction
 
 Forest fires are responsible for considerable environmental and monetary damage globally. Early detection and appropriate response can provide substantial relief, but what factors and data can be used to determine how threatening a fire is? While several studies of this nature exist that attempt to predict fires, this project attempts to predict the size of a fire's burn area, given fire science metric, spatio/temporal, and meteorological data. It is clear that simple meteorological data is the easiest to access, most abundant, and least expensive to gather, and thus is the cornerstone of the data collected here. Coincidentally, these variables seem to fit the best predictive model.
 
 A predictive model would give authorities a powerful tool in the fight against forest fires. Appropriate resources could be dedicated to a fire at inception, limiting cost and damage. More accurate alerts could be sent out to the public, increasing awareness as well as safety.
 
-###The Data Source
+### The Data Source
 
 The data to be used is available at http://archive.ics.uci.edu/ml/datasets/Forest+Fires, and is a collection curated by scientists Paulo Cortez and Anibal Morais from the Unviersity of Minho, Portugal. The data was used in their paper, [A Data Mining Approach to Predict Forest Fires using Meteorological Data](http://www3.dsi.uminho.pt/pcortez/fires.pdf).
 
 The data includes meteorological measurements taken at the time the fire was reported, spatial/temporal measurements, and index metrics that take into a account weather data in the recent past. The index metrics are a part of the Canadian Fire Weather Index System (FWI). Exhaustive information regarding the calculation of these indices can be found here: [FWI Handbook](https://www.frames.gov/files/6014/1576/1411/FWI-history.pdf).
 
-###Questions to Investigate
+### Questions to Investigate
 
 While the paper mentioned above did examine the correlation between the 4 meteorological measurements and fire damage area, it did not investigate the relationship between the 4 index metrics and fire damage area. Perhaps this is because the index metrics were not strongly correlated. I would like to compare the correlation between the immediate meteorological data and acreage burned and the correlation between the index metrics and acreage burned to see which is stronger. Month will also be considered.
 
-###Approach
+### Approach
 
 Since the output variable is a real number, I will attempt a regression analysis on the data using a variety of machine learning algorithms. This will include several variable shrinkage methods, regression trees, and support vector regression.
 
@@ -26,11 +26,11 @@ The data set is not extremely large, and there are extreme outliers, so random t
 
 The research paper referenced above used mean absolute value (MAE) as the scoring metric, so I will use this as well in order to use the paper as a benchmark.
 
-##Data Analysis
+## Data Analysis
 
 You can find the full data story in [Data_Story.ipynb](https://github.com/davidjwatts/portuguese_fires/blob/master/Data_Story.ipynb)
 
-###Variables
+### Variables
 
 There are 12 attributes included in the data, and 1 output variable.
 
@@ -44,18 +44,39 @@ FMC, DMC, and DC all take longer term rainfall and temperature averages into acc
 
 The target variable is the area of fire damage, measured in hectares. While each entry is a record of a fire, if the damaged area was less than 0.1 hectare, the value was rounded to 0.
 
-###Exploratory Analysis
+### Exploratory Analysis
 
 ~48% of the fires have been rounded to size 0, and this prevents transformation to a Gaussian distribution. However, this does provide a binary classification of the fires.
 
 Several variables have a lot of skew, so several transformations may be useful when performing the machine learning phase. A logarithmic transformation help reduce skew considerably for FFMC and area, while the square root brings ISI and rain considerably closer to normal.
 
-If we perform a logistic regression and random forest analysis to test whether the data with area=0 is distinguishable from the rest, we get poor areas under the ROC curves, only slightly above 50% on average.
+The Pearson correlation coefficients between input variables suggest we don't have to worry about co-linearity:
+![alt text](https://github.com/davidjwatts/portuguese_fires/blob/master/images/coefmat.png "Pearson coefficient matrix")
 
+Plotting each variable against the other gives more insight into the relationships:
+![alt text](https://github.com/davidjwatts/portuguese_fires/blob/master/images/pairplot.png "Pair plots")
 
+It is apparent that the FWIC metrics are manufactured from each other since their pair plots have so much structure. For instance, ISI and FFMC have some sort of hyperbolic relationship, and DMC and DC have a very linear relationship with an additional parameter separating the data into distinct parallel lines.
 
+Looking at the individual relationships between input variables and the target is informative as well:
+![alt text](https://github.com/davidjwatts/portuguese_fires/blob/master/images/targetplot1.png "Target plot 1")
+![alt text](https://github.com/davidjwatts/portuguese_fires/blob/master/images/targetplot2.png "Target plot 2")
 
-##Machine Learning
+You can see vague trends but all of the data points with area=0 seem to drown the information of any predictive power.
+
+Another thing to notice from both sets of pair plots is that they have been color coded to distinguish fires of size zero. Unfortunately, we do not see any separation of the colors when one of the axes is not area.
+
+Looking at the breakdown of fire size by month provides relief by granting our intuition:
+![alt text](https://github.com/davidjwatts/portuguese_fires/blob/master/images/areabymonth.png "Area broken down by month")
+
+And this graph resembles the break down of temperature:
+![alt text](https://github.com/davidjwatts/portuguese_fires/blob/master/images/tempbymonth.png "Temperature broken down by month")
+
+But the problem remains that many size zero fires occur in all circumstances. Indeed, simply distinguishing fires of size zero and those larger from the input variables is no easy feat. Running multiple iterations of logistic regression and random forests results in ~53% success prediction rate, with ROC curves that resemble guessing.
+
+This suggest the input variables are really very close to noise relative to the size of the fire.
+
+## Machine Learning
 
     [Machine_Learning.ipynb](https://github.com/davidjwatts/portuguese_fires/blob/master/Machine_Mearning.ipynb)
 

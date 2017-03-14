@@ -10,19 +10,19 @@ The data to be used is available at http://archive.ics.uci.edu/ml/datasets/Fores
 
 The data includes meteorological measurements taken at the time the fire was reported, spatial/temporal measurements, and index metrics that take into a account weather data in the recent past. The index metrics are a part of the Canadian Fire Weather Index System (FWI). Exhaustive information regarding the calculation of these indices can be found here: [FWI Handbook](https://www.frames.gov/files/6014/1576/1411/FWI-history.pdf).
 
-###Questions to Investigate
+### Questions to Investigate
 
 While the paper mentioned above did examine the correlation between the 4 meteorological measurements and fire damage area, it did not investigate the relationship between the 4 index metrics and fire damage area. Perhaps this is because the index metrics were not strongly correlated. I would like to compare the correlation between the immediate meteorological data and acreage burned and the correlation between the index metrics and acreage burned to see which is stronger. Month will be added in as well. Ultimately, I will try to find the combination of attributes of both types that leads to the strongest correlation.
 
-###Approach
+### Approach
 
 Since the output variable is a real number, I will attempt a regression analysis on the data using the contemporary best practices in machine learning. This will include various type of regression, including ridge regression, polynomial regression, regression trees, and regression SVM. It makes sense to me to also qualify the fire size as being either small or large (area equal to zero or greater than zero), and then run classification models as well.
 
-###Deliverables
+### Deliverables
 
 The final deliverables will consist of a slide deck, iPython notebook, and final paper writing up the details of the investigation and its conclusions.
 
-##Data Wrangling
+## Data Wrangling
 
 Data Wrangling was pretty straightforward in this case. The scientists had already assembled the data from several sources, merging it and dealing with null values.
 
@@ -30,7 +30,7 @@ I imported the data as a CSV, which was provided with column names. The 'month' 
 
 These steps have been refactored into a method called 'wrangle' and reside in the [utils.py](https://github.com/davidjwatts/portuguese_fires/blob/master/utils.py) file.
 
-##Data Story
+## Data Story
 
 You can find the full data story here:
 
@@ -42,7 +42,7 @@ The several variables have a lot of skew, so several transformations may be usef
 
 If we perform a logistic regression and random forest analysis to test whether the data with area=0 is distinguishable from the rest, we get poor areas under the ROC curves, only slightly above 50% on average.
 
-##Machine Learning
+## Machine Learning
 
 [Machine_Learning.ipynb](https://github.com/davidjwatts/portuguese_fires/blob/master/Machine_Mearning.ipynb)
 
