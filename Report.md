@@ -134,8 +134,8 @@ The regression error characteristic curve suggests that the model contains many 
 
 ### Reflection and Further Research
 
-There are other regression methods available to try, but most are derivative of the ones used in this paper. In particular, there are other tree based methods. Additionally, neural nets could be used. However, I think the main problem here is that the features were not closely related to the fire size. No model will be able to overcome that.
+There are other regression methods available to try, such as additional tree-based modesl, but most are derivative of the ones used in this paper. Neural nets are known for their accuracy and could be incorporated. However, I think the main problem here is that the features were not closely related to the fire size. No model will be able to overcome that.
 
-It is unclear whether these fires were put out by human efforts, or if many of them just ran their course. There are other fire issues such as the state of underbrush in the forest, which could be natural or due to controlled burns. A factor called aspect takes into consideration the gradient of the land near the fire, which has an impact on how quickly the fire can spread.
+Fire science expertise should be used to ascertain additional features related to forest fire activity. For instance, fire fighting efforts probably played a large role in limiting fire damage area, and this data completely obscures that. There are other fire issues such as the state of underbrush in the forest, which could be natural or due to controlled burns, and a factor called aspect takes into consideration the gradient of the land near the fire, which has an impact on how quickly the fire can spread. More relevant features will improve model accuracy.
 
-At any rate, I think forest fire expertise needs to be used to improve feature selection here, and additional data needs to be considered.
+The target variable, fire damage area, may not be misguided. I think including this variable as an input variable could be useful in determining other targets, such as likelihood of a fire. This probability could be thought of as a probability density function or cumulative distribution function, and could even be mapped geographically to determine areas of highest risk. 
