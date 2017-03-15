@@ -32,13 +32,13 @@ You can find the full data story in [Data_Story.ipynb](https://github.com/davidj
 
 ### Variables
 
-There are 12 attributes included in the data, and 1 output variable.
+There are 531 data entries, each with 12 attributes and 1 output variable.
 
-Two of these variables refer to the x and y coordinates of a map specific to Montesinho natural park, the location of the fires. Two variables refer to the time of the fire, one being the day of the week and the other being the month of the year the fire was reported.
+Two of these variables are positive integers and refer to the x and y coordinates of a map specific to Montesinho natural park, the location of the fires. Another two variables are also positive integers and refer to the time of the fire, one being the day of the week and the other being the month of the year the fire was reported.
 
-Four variables are meteorological measurements taken when the fire was first reported and include temperature, relative humidity, rain over the last 30 minutes, and wind speed.
+Four variables are meteorological measurements (floats) taken when the fire was first reported and include temperature, relative humidity, rain over the last 30 minutes, and wind speed.
 
-The remaining four variables, FMC, DMC, DC, and ISI, are FWIC index metrics which take those four basic meteorologic measurements into account over longer periods of time and in different proportions to determine factors such as moisture levels at different depths of the soil, which suggest how quickly a fire might be likely to spread or the temperature it might reach.
+The remaining four variables, FMC, DMC, DC, and ISI, are FWIC index metrics (floats) which take those four basic meteorologic measurements into account over longer periods of time and in different proportions to determine factors such as moisture levels at different depths of the soil, which suggest how quickly a fire might be likely to spread or the temperature it might reach.
 
 FMC, DMC, and DC all take longer term rainfall and temperature averages into account to measure how dry the land is. They consider the past 16 hours, 12 days, and 52 days respectively. FMC and DMC also consider relative humidity. ISI takes FMC and factors in wind speed to determine how easily surface level fire will spread.
 
@@ -73,7 +73,7 @@ Looking at the breakdown of fire size by month provides relief by granting our i
 
 ![alt text](https://github.com/davidjwatts/portuguese_fires/blob/master/images/areabymonth.png "Area broken down by month")
 
-And this graph resembles the break down of temperature:
+You'll notice it resembles the break down of temperature by month:
 
 ![alt text](https://github.com/davidjwatts/portuguese_fires/blob/master/images/tempbymonth.png "Temperature broken down by month")
 
@@ -83,12 +83,51 @@ But the problem remains that many size zero fires occur in all circumstances. In
 
 This suggests the input variables are really very close to noise relative to the size of the fire.
 
+
 ## Machine Learning
 
-    [Machine_Learning.ipynb](https://github.com/davidjwatts/portuguese_fires/blob/master/Machine_Mearning.ipynb)
+See the details in [Machine_Learning.ipynb](https://github.com/davidjwatts/portuguese_fires/blob/master/Machine_Mearning.ipynb)
 
-    Off the bat, it is clear that this will be a difficult regression task. Least squares regression analysis and principle components analysis suggests that the input variables are not highly correlated with the target variable.
+Off the bat, it is clear that this will be a difficult regression task. Least squares regression analysis and principle components analysis suggests that the input variables are not highly correlated with the target variable. Extremely high p-values for the coefficients of each input variable imply that it is likely there is no correlation between that variable and the output.
 
-    I bring many different regression algorithms, including: ridge regression, elastic net, lasso lars, support vector regression, and gradient boosting regression. The clear leaders are gradient boosting regression and support vector regression with radial basis kernel. The ensemble method consisting of averaging the predictions from those two models yields the best average MAE scores over repeated tests.
+Principle component analysis allows us to project the cloud of data onto the two-dimensional plane of greatest variance. This typically has the effect of displaying some amount of structure, and breaks up the data into groups with similarities. Our results differ according to which variables we include.
 
-    Hyper-parameters for the SVR model were fitted using 30 iterations of 10-fold cross-validation using a set of parameters surrounding base-line settings presented in the article. SVR parameters superior to those used in the article were achieved, but only reducing average MAE from 12.71 to 12.69. The ensemble method to shave another hundredth off average MAE.
+![alt text](https://github.com/davidjwatts/portuguese_fires/blob/master/images/pca.png "PCA graphs")
+
+All of variables, or even just FWIC metrics show us plenty of structure, but the structure exists between the metrics themselves, as we've seen before. There is no spread in fires by size. Looking at the meteorological variables, we see just an undifferentiated cloud with no spread in fire size. Fires of size zero can be found everywhere.
+
+### Algorithms
+
+Several variable shrinking regression methods were tested including: standard least squares regression, ridge regression, elastic net, and lasso lars. These all had very similar results, which isn't surprising because they are trying to minimize a function that penalizes coefficients for overall size.
+
+Support vector regression with linear and radial basis kernels was tested. Hyper-parameters for both include C and epsilon values which determine what to do with error values within certain ranges. Optimal values were found to be 3.0 and 0.31 for the radial basis kernel, which outperforms the linear kernel consistently. The optimal gamma hyper-parameter was found to be 0.075, which is the coefficient on the kernel function.
+
+Lastly, gradient boosting regression was tried. Hyper-parameters include the loss function to be minimized and the function to determine the quality of each tree split. The optimal settings for both were absolute deviation.
+
+The clear leaders are gradient boosting regression and support vector regression with radial basis kernel. I constructed an ensemble method consisting of averaging the predictions from those two models, and this yields the best average MAE scores over repeated tests. This makes sense since the two methods are substantially different in their approach, and there should be some reduction in bias.
+
+Technique |   MAE (30 trial avg)
+---|---
+Mean distance from the mean |  18.57
+Linear Regression |  13.01
+Ridge Regression |  12.99
+Elastic Net |  12.99
+Lasso Lars |  12.99
+SVR Linear |  12.85
+GBR |  12.71
+SVR Rbf |  12.70
+Hybrid |  12.69
+
+Hyper-parameters for the SVR and GBR models were fitted using 30 iterations of 10-fold cross-validation using a set of parameters surrounding base-line settings presented in the article. SVR parameters superior to those used in the article were achieved, but only reducing average MAE from 12.71 to 12.70. The ensemble method managed to shave another hundredth off average MAE.
+
+### Results
+
+The results are far from excellent, and it is questionable how useful they could be. Looking at this graph, which shows the comparison of all 30*531=15,930 predictions compared with the actual size of the fire shows just far off most predictions are.
+
+![alt text](https://github.com/davidjwatts/portuguese_fires/blob/master/images/predvsact.png "Predictions vs Actual Size")
+
+Many of the predictions seem to just be a guess in the 0-5 region, while predictions venture into the +5 region when the fires actually are larger than 5. A prediction of less than 5 may not be very meaningful, but a prediction of greater than 10 is highly indicative of a fire greater than 5.
+
+![alt text](https://github.com/davidjwatts/portuguese_fires/blob/master/images/rec.png "Regression Error Characteristic")
+
+The regression error characteristic curve suggests that the model contains many predictions within a reasonable error threshold. For example, 60% of the predictions are within 2 hecatres of error. However, the tail suggests an extreme degree of error for 10% or more of the test predictions.
