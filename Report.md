@@ -126,8 +126,16 @@ The results are far from excellent, and it is questionable how useful they could
 
 ![alt text](https://github.com/davidjwatts/portuguese_fires/blob/master/images/predvsact.png "Predictions vs Actual Size")
 
-Many of the predictions seem to just be a guess in the 0-5 region, while predictions venture into the +5 region when the fires actually are larger than 5. A prediction of less than 5 may not be very meaningful, but a prediction of greater than 10 is highly indicative of a fire greater than 5.
+Many of the predictions seem to just be a guess in the 0-5 region, while predictions venture into the +5 region when the fires actually are larger than 5. A prediction of less than 5 may not be very meaningful, but a prediction of greater than 10 is highly indicative of a fire greater than 5. This model could be used lend further support to an argument that a specific fire deserved a great deal of attention because it threatened to be large.
 
 ![alt text](https://github.com/davidjwatts/portuguese_fires/blob/master/images/rec.png "Regression Error Characteristic")
 
-The regression error characteristic curve suggests that the model contains many predictions within a reasonable error threshold. For example, 60% of the predictions are within 2 hecatres of error. However, the tail suggests an extreme degree of error for 10% or more of the test predictions.
+The regression error characteristic curve suggests that the model contains many predictions within a reasonable error threshold. For example, 60% of the predictions are within 2 hectares of error. However, the tail suggests an extreme degree of error for 10% or more of the test predictions.
+
+### Reflection and Further Research
+
+There are other regression methods available to try, but most are derivative of the ones used in this paper. In particular, there are other tree based methods. Additionally, neural nets could be used. However, I think the main problem here is that the features were not closely related to the fire size. No model will be able to overcome that.
+
+It is unclear whether these fires were put out by human efforts, or if many of them just ran their course. There are other fire issues such as the state of underbrush in the forest, which could be natural or due to controlled burns. A factor called aspect takes into consideration the gradient of the land near the fire, which has an impact on how quickly the fire can spread.
+
+At any rate, I think forest fire expertise needs to be used to improve feature selection here, and additional data needs to be considered.
