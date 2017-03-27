@@ -20,7 +20,7 @@ Since the output variable is a real number, I will attempt a regression analysis
 
 ### Deliverables
 
-The final deliverables will consist of a slide deck, iPython notebook, and final paper writing up the details of the investigation and its conclusions.
+The final deliverables will consist of a [slide deck](https://github.com/davidjwatts/portuguese_fires/blob/master/Presentation.pptx), iPython notebooks, and [final report](https://github.com/davidjwatts/portuguese_fires/blob/master/Final_Report.md) writing up the details of the investigation and its conclusions.
 
 ## Data Wrangling
 
