@@ -94,7 +94,7 @@ Principle component analysis allows us to project the cloud of data onto the two
 
 ![alt text](https://github.com/davidjwatts/portuguese_fires/blob/master/images/pca.png "PCA graphs")
 
-All of variables, or even just FWIC metrics show us plenty of structure, but the structure exists between the metrics themselves, as we've seen before. There is no spread in fires by size. Looking at the meteorological variables, we see just an undifferentiated cloud with no spread in fire size. Fires of size zero can be found everywhere.
+All of the variables, or even just FWIC metrics show us plenty of structure, but the structure exists between the metrics themselves, as we've seen before. There is no spread of fires by size. Looking at the meteorological variables, we see just an undifferentiated cloud of mixed color. Fires of size zero can be found everywhere.
 
 ### Algorithms
 
