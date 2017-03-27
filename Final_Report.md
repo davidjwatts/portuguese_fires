@@ -16,7 +16,7 @@ The data includes meteorological measurements taken at the time the fire was rep
 
 ### Questions to Investigate
 
-While the paper mentioned above did examine the correlation between the 4 meteorological measurements and fire damage area, it did not investigate the relationship between the 4 index metrics and fire damage area. Perhaps this is because the index metrics were not strongly correlated. I would like to compare the correlation between the immediate meteorological data and acreage burned and the correlation between the index metrics and acreage burned to see which is stronger. Month will also be considered.
+While the paper mentioned above did examine the correlation between the four meteorological measurements and fire damage area, it did not investigate the relationship between the four index metrics and fire damage area. My initial goal was examine different subsets of features, but after starting the machine learning process, it became clear that there was an overall lack of signal in the data. From my own analysis, I can confirm that including the four index metrics does decrease overall performance, to a very small extent.
 
 ### Approach
 
