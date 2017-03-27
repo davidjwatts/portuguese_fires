@@ -22,7 +22,7 @@ While the paper mentioned above did examine the correlation between the four met
 
 Since the output variable is a real number, I will attempt a regression analysis on the data using a variety of machine learning algorithms. This will include several variable shrinkage methods, regression trees, and support vector regression.
 
-The data set is not extremely large, and there are extreme outliers, so random train/test groupings vary widely in their results. As a consequence, I will typically run 30 iterations of 10-fold cross-validation for each variable/parameter test, and average all results.
+The data set is not extremely large, and there are extreme outliers, so random train/test groupings vary widely in their results. As a consequence, I will run 30 iterations of 10-fold cross-validationm and average all results for each model to compare them, after fitting the models with optimal parameters.
 
 The research paper referenced above used mean absolute value (MAE) as the scoring metric, so I will use this as well in order to use the paper as a benchmark.
 
