@@ -98,27 +98,32 @@ All of the variables, or even just FWIC metrics show us plenty of structure, but
 
 ### Algorithms
 
-Several variable shrinking regression methods were tested including: standard least squares regression, ridge regression, elastic net, and lasso lars. These all had very similar results, which isn't surprising because they are trying to minimize a function that penalizes coefficients for overall size.
+Several variable shrinking regression methods were tested in addition to standard least squares, including: ridge regression, lasso regression, and elastic net. These all had very similar results, which isn't surprising because they are trying to minimize a function that penalizes coefficients for overall size. However, since the data is so noisy, the models did worse than guessing zero for each fire. 
 
-Support vector regression with linear and radial basis kernels was tested. Hyper-parameters for both include C and epsilon values which determine what to do with error values within certain ranges. Optimal values were found to be 3.0 and 0.31 for the radial basis kernel, which outperforms the linear kernel consistently. The optimal gamma hyper-parameter was found to be 0.075, which is the coefficient on the kernel function.
+Support vector regression with linear and radial basis kernels was tested. Hyper-parameters for both include C and epsilon values which determine what to do with error values within certain ranges. The gamma parameter is usually related to the spread of the target data set. The radial basis kernel consistently outperforms the linear kernel, and both consistently outperformed guessing a fire size of 0.
 
-Lastly, gradient boosting regression was tried. Hyper-parameters include the loss function to be minimized and the function to determine the quality of each tree split. The optimal settings for both were absolute deviation.
+Lastly, gradient boosting regression was tried. Hyper-parameters include the loss function to be minimized and the function to determine the quality of each tree split. The optimal settings for both were absolute deviation, since our score to optimize for, MAE, is based on absolute deviation. This model performed between the two support vector regression models. 
 
-The clear leaders are gradient boosting regression and support vector regression with radial basis kernel. I constructed an ensemble method consisting of averaging the predictions from those two models, and this yields the best average MAE scores over repeated tests. This makes sense since the two methods are substantially different in their approach, and there should be some reduction in bias.
+The clear leaders are gradient boosting regression and support vector regression with radial basis kernel. I constructed an ensemble method consisting of averaging the predictions from those two models, and this yields the best average MAE scores over repeated tests. This makes sense since the two methods are substantially different in their approach, and there should be some reduction in bias by combining them.
 
 Technique |   MAE (30 trial avg)
 ---|---
-Mean distance from the mean |  18.57
-Linear Regression |  13.01
-Ridge Regression |  12.99
-Elastic Net |  12.99
-Lasso Lars |  12.99
-SVR Linear |  12.85
-GBR |  12.71
-SVR Rbf |  12.70
-Hybrid |  12.69
+Linear Regression |  13.00
+Ridge Regression |  12.98
+Elastic Net |  12.98
+Lasso |  12.98
+Guessing 0 fire size |  12.85
+SVR Linear |  12.84
+GBR |  12.70
+SVR Rbf |  12.67
+Hybrid |  12.66
 
-Hyper-parameters for the SVR and GBR models were fitted using 30 iterations of 10-fold cross-validation using a set of parameters surrounding base-line settings presented in the article. SVR parameters superior to those used in the article were achieved, but only reducing average MAE from 12.71 to 12.70. The ensemble method managed to shave another hundredth off average MAE.
+### Best Model
+
+The best model is ensemble that averages the the predictions from the support vector regression model with radial basis kernel and the gradient boosting regression model with maximum depth of one, with absolute value for the criterion and loss functions. Parameters for the SVR are C = 4.76, epsilon = 0.294, and gamma = 0.075.
+
+Hyperparameters were found in part by starting with those cited in the paper and searching the surrounding neighborhoods.
+SVR MAE scores superior to those used in the article were achieved, but only reducing average MAE from 12.71 to 12.67. The ensemble method managed to shave another hundredth off average MAE.
 
 ### Results
 
@@ -126,16 +131,16 @@ The results are far from excellent, and it is questionable how useful they could
 
 ![alt text](https://github.com/davidjwatts/portuguese_fires/blob/master/images/predvsact.png "Predictions vs Actual Size")
 
-Many of the predictions seem to just be a guess in the 0-5 region, while predictions venture into the +5 region when the fires actually are larger than 5. A prediction of less than 5 may not be very meaningful, but a prediction of greater than 10 is highly indicative of a fire greater than 5. This model could be used lend further support to an argument that a specific fire deserved a great deal of attention because it threatened to be large.
+Many of the predictions seem to just be a guess in the 0-5 region, while predictions venture into the +5 region when the fires actually are larger than 5. A prediction of less than 5 may not be very meaningful, but a prediction of greater than 10 is highly indicative of a fire greater than 5. This model could be used to lend further support to an argument that a specific fire deserved a great deal of attention because it threatened to be large.
 
 ![alt text](https://github.com/davidjwatts/portuguese_fires/blob/master/images/rec.png "Regression Error Characteristic")
 
-The regression error characteristic curve suggests that the model contains many predictions within a reasonable error threshold. For example, 60% of the predictions are within 2 hectares of error. However, the tail suggests an extreme degree of error for 10% or more of the test predictions.
+The regression error characteristic curve suggests that the model contains many predictions within a reasonable error threshold. For example, 60% of the predictions are within 2 hectares of error. However, the tail suggests an extreme degree of error for 10% or more of the test predictions. When compared with the guess of 0 for each fire, we see that there is laughably little difference.
 
 ### Reflection and Further Research
 
-There are other regression methods available to try, such as additional tree-based modesl, but most are derivative of the ones used in this paper. Neural nets are known for their accuracy and could be incorporated. However, I think the main problem here is that the features were not closely related to the fire size. No model will be able to overcome that.
+I believe I have successfully shown that the data is more noise than signal, and that even an exhaustive survey of machine learning methods would fail to improve much on my results. However, it is only clear that the data and features at hand fail to show a useful correlation.
 
-Fire science expertise should be used to ascertain additional features related to forest fire activity. For instance, fire fighting efforts probably played a large role in limiting fire damage area, and this data completely obscures that. There are other fire issues such as the state of underbrush in the forest, which could be natural or due to controlled burns, and a factor called aspect takes into consideration the gradient of the land near the fire, which has an impact on how quickly the fire can spread. More relevant features will improve model accuracy.
+Fire science expertise should be used to ascertain additional features related to forest fire activity. For instance, fire fighting efforts probably played a large role in limiting fire damage area, and this data completely obscures that. There are other fire issues such as the state of underbrush in the forest, which could be natural or due to controlled burns, and a factor called aspect takes into consideration the gradient of the land near the fire, which has an impact on how quickly fire spreads. More relevant features will improve model accuracy.
 
-The target variable, fire damage area, may not be misguided. I think including this variable as an input variable could be useful in determining other targets, such as likelihood of a fire. This probability could be thought of as a probability density function or cumulative distribution function, and could even be mapped geographically to determine areas of highest risk. 
+The target variable, fire damage area, may not be misguided. I think including this variable as an input variable could be useful in determining other targets, such as likelihood of a fire. This likelihood could be thought of as a probability density function or cumulative distribution function, and could even be mapped geographically to determine areas of highest risk.
