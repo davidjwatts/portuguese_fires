@@ -44,7 +44,7 @@ If we perform a logistic regression and random forest analysis to test whether t
 
 ## Machine Learning
 
-[Machine_Learning.ipynb](https://github.com/davidjwatts/portuguese_fires/blob/master/Machine_Mearning.ipynb)
+[Machine_Learning.ipynb](https://github.com/davidjwatts/portuguese_fires/blob/master/Machine_Learning.ipynb)
 
 Off the bat, it is clear that this will be a difficult regression task. Least squares regression analysis and principle components analysis suggests that the input variables are not highly correlated with the target variable.
 
